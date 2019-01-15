@@ -15,41 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/sample', function () {
-//     return view('sample',
-//     	[
-//     		'name' => 'juan',
-//     		'middlename' => 'dela',
-//     		'surname' => 'cruz'
-//     	]
-//     );
-// });
 
-
-// Route::get('/sample', function () {
-//     $fullname = [
-//     		'name' => 'juan',
-//     		'middlename' => 'dela',
-//     		'surname' => 'cruz'
-//     	];
-//     return view('sample')->with('fullname', $fullname );
-// });
-
-// Route::get('/sample', function () {
-//     $fullname = [
-//     		'name' => 'mark',
-//     		'middlename' => 'dela',
-//     		'surname' => 'cruz'
-//     	];
-
-//     $helloworld = "john";
-//     return view('sample', compact('fullname', 'helloworld' ));
-// });
-
-// TRANSFER ABOVE TO SAMPLE CONTROLLER AND POINT TO VIEW
-// Route::get('/sample',"SampleController@greetPerson");
-// Route::get('/fruits',"SampleController@nameofFruits");
-Route::get('/tasklist', 'TaskController@showTask');
-Route::post('/newtask', 'TaskController@addTask');
-Route::delete('/taskdelete/{taskid}', 'TaskController@deleteTask');
-Route::put('/taskupdate/{taskid}', 'TaskController@updateTask');
+Route::get('/catalog', 'ItemController@showItems');
+// Route::post('/add_items', 'ItemController@addItems');
+// NOTE: add description and other columns esp since they don't have a default values
