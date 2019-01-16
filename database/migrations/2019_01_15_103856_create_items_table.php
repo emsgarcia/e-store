@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->decimal('price',10,2);
-            $table->string('image_path')->default('sample');
+            $table->string('image_path')->default('https://via.placeholder.com/200');
             $table->unsignedInteger('category_id');
 
             $table->foreign('category_id')

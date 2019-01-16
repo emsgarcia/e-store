@@ -17,5 +17,9 @@ Route::get('/', function () {
 
 
 Route::get('/catalog', 'ItemController@showItems');
-// Route::post('/add_items', 'ItemController@addItems');
-// NOTE: add description and other columns esp since they don't have a default values
+Route::get('/menu/add', 'ItemController@showItemAddForm');
+Route::get('/menu/{id}', 'ItemController@itemDetails');
+Route::post('/menu/add', 'ItemController@saveItems');
+// Route::put('/taskupdate/{taskid}', 'TaskController@updateTask');
+Route::delete('/itemdelete/{id}' , 'ItemController@deleteItem');
+

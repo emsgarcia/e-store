@@ -36,50 +36,15 @@
 
 				<h3>Current Items</h3>
 				@foreach($items as $item)
-				<div><a href="#" id='{{ $item->id }}' >{{ $item->name }}</a></div>
+				<div><a href="/menu/{{ $item->id }}">{{ $item->name }}</a></div>
 				@endforeach
-				<button type='button' class='btn btn-primary' onclick='openAddItemModal()' data-toggle='modal' id='btn_add_item'>+ Add New Item</button>
+				<a href='/menu/add' class='btn btn-primary' id='btn_add_item'>+ Add New Item</a>
 			</div>
 		</div>
 	</div>
 
 
 
-
-	<!-- ADD TASK MODAL -->
-	<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="addItemModalLabel">Add New Item?</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	      	<form action='/add_items' method='POST'>
-	      		{{ csrf_field() }} 
-	      		<label>New Item:</label>
-	      		<input type='text' name='add_items' id='add_items'></input>
-	      		
-	      		<button type="submit" class="btn btn-primary">Save changes</button>
-	      	</form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-
-
-	<script type="text/javascript">
-		function openAddItemModal(){
-			$('#addItemModal').modal('show');
-		}
-
-	</script>
 
 
 

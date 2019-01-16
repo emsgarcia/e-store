@@ -25,9 +25,48 @@
 <body>
 	<div class='container my-5 p-5'>
 		<div class='row mb-5'>
-			<div class='col'>
+			<div class='col d-flex flex-column'>
+				<h1 class='text-center mb-5'>Add New Item</h1>
+
+				@if($errors->any())
+				    <div class="alert alert-danger mb-5">
+				        <ul class='list-unstyled'>
+				            @foreach ($errors->all() as $error)
+				                <li>{{ $error }}</li>
+				            @endforeach
+				        </ul>
+				    </div>
+				@endif
+
+				<form action='/menu/add' method='POST' enctype='multipart/form-data'>
+				{{ csrf_field() }} 
+
+					<div class="form-group">
+					    <label for="name">Name</label>
+					    <input type="text" class="form-control" id="name" name='name'>
+					 </div>
+
+					 <div class="form-group">
+					    <label for="description">Description</label><textarea type="text" class="form-control" id="description" name='description'></textarea></div>
+
+					 <div class="form-group">
+					    <label for="price">Price</label>
+					    <input type="number" class="form-control" id="price" name='price'>
+					 </div>
+
+					 <div class="form-group">
+					    <label for="image_path">Upload Image</label>
+					    <input type="file" class="form-control-file p-2 border rounded" id="image_path" name='image_path'>
+					  </div>
+
+					  <button class='btn btn-primary' id='btn_addItem'>+ Add New Item</button>
+				</form>
 			</div>
 		</div>
+
 	</div>
+
+
+	
 </body>
 </html>
