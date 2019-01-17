@@ -24,25 +24,43 @@
 </head>
 <body>
 	<div class='container my-5 p-5'>
+
+		<div class="row">
+			<div class="col-2"></div>
+			<div class="col">
+				@if($errors->any())
+				    <div class="alert alert-danger mb-5">
+				        <ul class='list-unstyled'>
+				            @foreach ($errors->all() as $error)
+				                <li>{{ $error }}</li>
+				            @endforeach
+				        </ul>
+				    </div>
+				@endif
+			</div>
+			<div class="col-4"></div>
+		</div>
 		<div class='row mb-5'>
+			<div class="col-2"></div>
 			<div class='col'>
 				<!-- <h1>Item Details</h1> -->
 				<div class='d-flex flex-row'>
 					<div><img src="{{ $itemdetails->image_path }}" class='img-fluid thumbnail'></div>
-					<div class='d-flex flex-column ml-4'>
+					<div class='d-flex flex-column ml-4 mt-5'>
 						<h1>{{ $itemdetails->name }} </h1>
 						<h3 class='mb-4'><span>₱</span>{{ $itemdetails->price }} </h3>
 						<div class='mb-5'>{{ $itemdetails->description }} </div>
 						
 
 						<div class='d-flex flex-row'>
-							<a href='#' class='btn btn-primary mr-3'onclick="openEditModal({{ $itemdetails->id}}, '{{ $itemdetails->name }}')" data-toggle='modal'>EDIT</a>
-							<a href='#' class='btn btn-danger' 
+							<a href='#' class='btn border btn-lg rounded-0 bg-dark text-light mr-3 px-5'onclick="openEditModal({{ $itemdetails->id}}, '{{ $itemdetails->name }}')" data-toggle='modal'>EDIT</a>
+							<a href='#' class='btn border btn-lg rounded-0 mr-3' 
 								onclick="openDeleteModal({{ $itemdetails->id}}, '{{ $itemdetails->name }}')" data-toggle='modal'>DELETE</a>
 						</div>
 					</div>
 				</div>
 			</div>
+			<div class="col-3"></div>
 		</div>
 	</div>
 
@@ -50,22 +68,23 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   	<div class="modal-dialog" role="document">
     	<div class="modal-content">
-	      	<div class="modal-header">
-	        	<h5 class="modal-title" id="deleteModalLabel">Delete this item?</h5>
+	      	<div class="modal-header p-5">
+	        	<h3 class="modal-title" id="deleteModalLabel">Delete this item?</h3>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 	      	</div>
-	      
+
+				      
 		      <form method="POST" id='deleteItem'>
 			      	{{ csrf_field() }}
 			      	{{ method_field('DELETE') }}
-			        <div class="modal-body">
+			        <div class="modal-body p-5">
 				        <span id='itemDel'>Do you want to delete this item?</span>			  
 				    </div>
-			      <div class="modal-footer">
-			      <button type='submit' class='btn btn-danger'>Delete</button>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			      <div class="modal-footer p-5">
+			      <button type='submit' class='btn btn-lg bg-dark text-light rounded-0'>Delete</button>
+			        <button type="button" class="btn btn-lg border rounded-0" data-dismiss="modal">Close</button>
 			      </div>
 		       </form>
       
@@ -77,41 +96,59 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
   	<div class="modal-dialog" role="document">
     	<div class="modal-content">
-	      	<div class="modal-header">
-		        <h5 class="modal-title" id="editModalLabel">Update This Task?</h5>
+	      	<div class="modal-header p-5">
+		        <h3 class="modal-title" id="editModalLabel">Update this item?</h3>
+		       
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 	        </div>
-	      	<form method="POST" id='editItemForm' enctype='multipart/form-data'>
+	      	<form method='POST' id='editItemForm' enctype='multipart/form-data'>
 			    {{ csrf_field() }}
-			    {{ method_field('PUT') }}
-		      	<div class="modal-body d-flex flex-column">
+			    {{ method_field('PATCH') }}
+		      	<div class="modal-body d-flex flex-column p-5">
 		        
 			       
 				  	<div class="form-group">
 					    <label for="name">Name</label>
-					    <input type="text" class="form-control" id="name" name='name'>
+					    <input type="text" class="form-control rounded-0" id="name" name='name' value='{{ $itemdetails->name }}'>
 					</div>
 
 					<div class="form-group">
-					    <label for="description">Description</label><textarea type="text" class="form-control" id="description" name='description'></textarea></div>
+					    <label for="description">Description</label><textarea type="text" class="form-control" id="description" name='description'>{{ $itemdetails->description }}</textarea></div>
 
 					<div class="form-group">
 					    <label for="price">Price</label>
-					    <input type="number" class="form-control" id="price" name='price'>
+					    <div class="input-group">
+					    	<div class="input-group-prepend">
+				        		<div class="input-group-text rounded-0">₱</div>
+				        	</div>
+				        	<input type="number" class="form-control rounded-0" id="price" name='price' value='{{ $itemdetails->price }}' min=1>
+				        </div>
+					</div>
+
+					<div class="form-group">
+					    <label for="category">Category</label>
+					    <select class='form-control rounded-0' name='category' id='category'>
+					    	@foreach($categories as $category)
+					    	@if($itemdetails->category_id == $category->id)
+					    	<option value='{{ $category->id }}' selected>{{ $category->name }}</option>
+					    	@else 
+					    	<option value='{{ $category->id }}'>{{ $category->name }}</option>
+					    	@endif
+					    	@endforeach
+					    </select>
 					</div>
 
 					<div class="form-group">
 					    <label for="image_path">Upload Image</label>
-					    <input type="file" class="form-control-file p-2 border rounded" id="image_path" name='image_path'>
+					    <input type="file" class="form-control-file p-2 border rounded-0" id="image_path" name='image_path' value='{{ $itemdetails->image_path }}'>
 					</div>
 
-
 				</div>
-				<div class="modal-footer">
-				  	<button type='submit' class='btn btn-primary'>SAVE CHANGES</button>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<div class="modal-footer p-5">
+				  	<button type='submit' class='btn btn-lg bg-dark text-light rounded-0'>SAVE CHANGES</button>
+					<button type="button" class="btn btn-lg border rounded-0" data-dismiss="modal">Close</button>
 				</div>
 	     	</form>
     	</div>
@@ -128,8 +165,8 @@
 		$('#deleteModal').modal('show');
 	}
 
-	function openEditModal(id, name){
-		$('#editItemForm').attr('action', '/itemupdate/' + id);
+	function openEditModal(taskid, name){
+		$('#editItemForm').attr('action', '/menu/' + taskid);
 		$('#editModal').modal('show');
 	}
 

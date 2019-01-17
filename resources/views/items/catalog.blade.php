@@ -24,6 +24,13 @@
 </head>
 <body>
 	<div class='container my-5 p-5'>
+		<div class="row">
+			<div class="col">
+				<div class="alert bg-secondary text-light">
+					{{ Session::get('successmessage') }}
+				</div>
+			</div>
+		</div>
 		<div class='row mb-5'>
 			<div class='col'>
 				<h1>Catalog</h1>
@@ -38,7 +45,7 @@
 				@foreach($items as $item)
 				<div><a href="/menu/{{ $item->id }}">{{ $item->name }}</a></div>
 				@endforeach
-				<a href='/menu/add' class='btn btn-primary' id='btn_add_item'>+ Add New Item</a>
+				<a href='/menu/add' class='btn btn-lg bg-dark text-light rounded-0' id='btn_add_item'>+ Add New Item</a>
 			</div>
 		</div>
 	</div>

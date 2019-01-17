@@ -25,7 +25,8 @@
 <body>
 	<div class='container my-5 p-5'>
 		<div class='row mb-5'>
-			<div class='col d-flex flex-column'>
+			<div class="col-4"></div>
+			<div class='col d-flex flex-column border p-5'>
 				<h1 class='text-center mb-5'>Add New Item</h1>
 
 				@if($errors->any())
@@ -43,25 +44,40 @@
 
 					<div class="form-group">
 					    <label for="name">Name</label>
-					    <input type="text" class="form-control" id="name" name='name'>
+					    <input type="text" class="form-control rounded-0" id="name" name='name'>
 					 </div>
 
 					 <div class="form-group">
-					    <label for="description">Description</label><textarea type="text" class="form-control" id="description" name='description'></textarea></div>
+					    <label for="description">Description</label><textarea type="text" class="form-control rounded-0" id="description" name='description'></textarea></div>
 
 					 <div class="form-group">
 					    <label for="price">Price</label>
-					    <input type="number" class="form-control" id="price" name='price'>
+					    <div class="input-group">
+					    	<div class="input-group-prepend">
+				        		<div class="input-group-text rounded-0">₱</div>
+				        	</div>
+					    	<input type="number" class="form-control rounded-0" id="price" name='price' min=1>
+					    </div>
 					 </div>
 
 					 <div class="form-group">
+					    <label for="category">Category</label>
+					    <select class='form-control rounded-0' name='category' id='category'>
+					    	@foreach($categories as $category)
+					    	<option value='{{ $category->id }}'>{{ $category->name }}</option>
+					    	@endforeach
+					    </select>
+					</div>
+
+					 <div class="form-group">
 					    <label for="image_path">Upload Image</label>
-					    <input type="file" class="form-control-file p-2 border rounded" id="image_path" name='image_path'>
+					    <input type="file" class="form-control-file p-2 border rounded-0" id="image_path" name='image_path'>
 					  </div>
 
-					  <button class='btn btn-primary' id='btn_addItem'>+ Add New Item</button>
+					  <button class='btn btn-lg bg-dark text-light rounded-0 btn-block mt-5' id='btn_addItem'>+ Add New Item</button>
 				</form>
 			</div>
+			<div class="col-4"></div>
 		</div>
 
 	</div>
