@@ -5,6 +5,8 @@
 		Laravel E-commerce
 	</title>
 
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
 	<!-- BOOTSTRAP CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
@@ -29,26 +31,36 @@
 			<div class="col-2"></div>
 			<div class="col">
 				@if($errors->any())
-				    <div class="alert alert-danger mb-5">
+				    <div class="alert alert-danger mb-5 rounded-0">
 				        <ul class='list-unstyled'>
 				            @foreach ($errors->all() as $error)
 				                <li>{{ $error }}</li>
 				            @endforeach
 				        </ul>
 				    </div>
+				@elseif(Session::has("successmessage"))
+				<div class="alert alert-success rounded-0">
+					{{ Session::get('successmessage') }}
+				</div>
 				@endif
+
+
+
 			</div>
 			<div class="col-4"></div>
 		</div>
+
+	
+
 		<div class='row mb-5'>
 			<div class="col-2"></div>
 			<div class='col'>
 				<!-- <h1>Item Details</h1> -->
-				<div class='d-flex flex-row'>
+				<div class='d-flex flex-lg-row flex-md-row flex-sm-column'>
 					<div><img src="{{ $itemdetails->image_path }}" class='img-fluid thumbnail'></div>
 					<div class='d-flex flex-column ml-4 mt-5'>
 						<h1>{{ $itemdetails->name }} </h1>
-						<h3 class='mb-4'><span>₱</span>{{ $itemdetails->price }} </h3>
+						<h3 class='mb-4'><span>₱ </span>{{ number_format($itemdetails->price, 2, '.', ',') }} </h3>
 						<div class='mb-5'>{{ $itemdetails->description }} </div>
 						
 

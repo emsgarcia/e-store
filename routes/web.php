@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+// ITEMS
 Route::get('/catalog', 'ItemController@showItems');
 Route::get('/menu/add', 'ItemController@showItemAddForm');
 Route::get('/menu/{id}', 'ItemController@itemDetails');
@@ -23,4 +23,8 @@ Route::post('/menu/add', 'ItemController@saveItems');
 Route::patch('/menu/{taskid}', 'ItemController@updateItem');
 Route::delete('/itemdelete/{id}' , 'ItemController@deleteItem');
 
+// CART
+Route::post('/addToCart/{id}', 'ItemController@addToCart');
+Route::get('/showcart', 'ItemController@showCart');
+Route::delete('/cartItemdelete/{id}' , 'ItemController@deleteCartItem');
 

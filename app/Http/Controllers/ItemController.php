@@ -8,6 +8,8 @@ use Session;
 
 class ItemController extends Controller
 {
+
+	//ITEMS
     public function showItems(){
     	$items = Item::all();
     	$categories = Category::all();
@@ -21,13 +23,6 @@ class ItemController extends Controller
     	return view('items.item_details', compact("itemdetails", "categories"));
     }
 
-    // public function addItems(Request $request){
-    // 	$item = new Item;
-    // 	$item->name = $request->add_items;
-    // 	$item->save();
-    // 	return redirect("/catalog");
-
-    // }
 
     public function showItemAddForm(){
     	$categories = Category::all();
@@ -69,6 +64,7 @@ class ItemController extends Controller
     public function deleteItem($id){
     	$itemdelete = Item::find($id);
     	$itemdelete->delete();
+    	Session::flash("deletemessage", "Item was succesfully deleted!");
     	return redirect("/catalog");
     }
 
@@ -106,11 +102,64 @@ class ItemController extends Controller
     	$itemdetails->save();
     	// return redirect("/catalog");
     	$categories = Category::all();
+    	Session::flash("successmessage", "Item was successfully updated!");
     	return view('items.item_details', compact("itemdetails", "categories"));
 
     }
 
+    // CART
+    public function addToCart($id, Request $request){
 
+    	//if we have items on cart
+    	if(Session::has("cart")){
+    		$cart = Session::get("cart"); // get data from session cart
+    	} else {
+			$cart = []; //else, initialize cart
+    	}
+
+    	//if item on cart is already set
+    	if(isset($cart[$id])) {
+    		//add on existing quantity through array push
+    		$cart[$id] += $request->quantity;
+    	} else {
+    		//create item with quantity
+    		$cart[$id] = $request->quantity;
+    	}
+
+        //save item and quantity in cart session
+    	//cart contains item id and its quantity
+    	Session::put("cart", $cart);
+    	Session::flash("successmessage", "Item added to cart!");
+    	return redirect("/catalog");
+    	
+    }
+
+    public function showCart(){
+    	// dd(Session::get("cart"));
+
+    	//create an array where you will push data from session cart -- item id & quantity
+    	$item_cart = [];
+    	if(Session::has('cart')){
+    		$cart = Session::get('cart');
+    		$total = 0;
+    		foreach($cart as $id => $quantity){
+    			$item = Item::find($id); //id from session cart
+    			$item->quantity = $quantity; //quantity is not in the table but in session cart
+    			$item->subtotal = $item->price * $quantity;//create subtotal
+    			$total += $item->subtotal;
+    			$item_cart[] = $item; // item in cart now contains id,name, description, price, image_path, category, quantity and subtotal
+    		}
+    	}
+
+    	return view('items.cart_content', compact("item_cart", "total"));
+    }
+
+    public function deleteCartItem($id){
+		Session::forget($id);
+		Session::flash("successmessage", "Item deleted from cart!");
+		return view('items.cart_content');
+    	
+    }
 
 
 

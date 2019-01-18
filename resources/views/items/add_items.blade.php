@@ -5,6 +5,8 @@
 		Laravel E-commerce
 	</title>
 
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
 	<!-- BOOTSTRAP CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
@@ -24,13 +26,12 @@
 </head>
 <body>
 	<div class='container my-5 p-5'>
-		<div class='row mb-5'>
-			<div class="col-4"></div>
-			<div class='col d-flex flex-column border p-5'>
-				<h1 class='text-center mb-5'>Add New Item</h1>
+
+		<div class="row">
+			<div class="col">
 
 				@if($errors->any())
-				    <div class="alert alert-danger mb-5">
+				    <div class="alert alert-danger mb-5 rounded-0">
 				        <ul class='list-unstyled'>
 				            @foreach ($errors->all() as $error)
 				                <li>{{ $error }}</li>
@@ -38,6 +39,16 @@
 				        </ul>
 				    </div>
 				@endif
+
+				
+			</div>
+		</div>
+		
+
+		<div class='row mb-5'>
+			<div class="col-4"></div>
+			<div class='col d-flex flex-column border p-5'>
+				<h1 class='text-center mb-5'>Add New Item</h1>
 
 				<form action='/menu/add' method='POST' enctype='multipart/form-data'>
 				{{ csrf_field() }} 
