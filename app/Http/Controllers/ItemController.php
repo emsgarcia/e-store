@@ -154,10 +154,26 @@ class ItemController extends Controller
     	return view('items.cart_content', compact("item_cart", "total"));
     }
 
-    public function deleteCartItem($id){
-		Session::forget($id);
+    public function deleteCartItem($taskid){
+
+		Session::forget("cart.$taskid"); //same as $cart[$id]
 		Session::flash("successmessage", "Item deleted from cart!");
-		return view('items.cart_content');
+
+		return redirect("/showcart");
+	
+    }
+
+    public function clearCart(){
+    	Session::forget("cart"); //same as $cart[$id]
+		Session::flash("successmessage", "Cart has been deleted!");
+		return redirect("/catalog");
+    }
+
+    public function updateItemQuantity($taskid, Request $request){
+    	$cart = Session::get("cart");
+    	$cart[$taskid] = $request->newquantity; //push new quantity to cart array;
+		Session::put("cart", $cart);
+    	return redirect("/showcart");
     	
     }
 

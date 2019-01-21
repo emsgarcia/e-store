@@ -24,6 +24,15 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
 </head>
+<style>
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+</style>
 <body>
 	<div class='container-fluid my-5 p-5'>
 
@@ -31,7 +40,11 @@
 		<div class="row">
 			<div class="col">
 
-				@if(Session::has("deletemessage"))
+				@if(Session::has("successmessage"))
+				<div class="alert alert-success rounded-0">
+					{{ Session::get('successmessage') }}
+				</div>
+				@elseif(Session::has("deletemessage"))
 				<div class="alert alert-danger rounded-0">
 					{{ Session::get('deletemessage') }}
 				</div>
@@ -48,6 +61,7 @@
 			<div class='col-1'></div>
 		</div>
 
+		@if($item_cart != null)
 		<div class='row mb-5'>
 			<div class='col-1'></div>
 			<div class='col'>
@@ -66,35 +80,76 @@
 						@foreach($item_cart as $item)
 						<tr>
 							<th scope="row">{{$item->name}}</th>
-							<td> 
-								<input class='rounded-0 text-center' value='{{ $item->quantity }}'>
+							<td class='d-flex flex-row'> 
+									<form method='POST' id='updateQuantity'>
+										{{ csrf_field() }}
+										{{ method_field('PATCH') }}
+										<div class="input-group mb-3">
+												<div class="input-group-prepend">
+												    <button class="input-group-text rounded-0" onclick="minus({{ $item->id }})">
+												    &#8722;
+												    </button>
+											   	</div>
+											
+											    <input type='number' class='rounded-0 text-center newquantity{{$item->id}}' name='newquantity' value='{{ $item->quantity }}' style='width:25%;' min='1'>	
+
+											    <div class="input-group-prepend">
+												    <button class="input-group-text rounded-0" onclick="plus({{ $item->id }})">
+												    +
+												    </button>
+											   	</div>
+										</div>
+											<!-- <button class='btn rounded-0 border'>
+												Update Quantity
+											</button> -->
+									</form>
+								
 							</td>
 							<td>₱ {{ number_format($item->price, 2, '.', ',') }}</td>
 							<td>₱ {{ number_format($item->subtotal, 2, '.', ',') }}</td>
 							<td>
-								<form method="POST" id='deleteCartItem'>
-						      	{{ csrf_field() }}
-						      	{{ method_field('DELETE') }}
-									<button class='btn border rounded-0' onclick="openDeleteModal({{ $item->id}}, '{{ $item->name }}')" data-toggle='modal'>Delete</button>
-								</form>
+								
+								<button class='btn border rounded-0' onclick="openDeleteModal({{ $item->id}}, '{{ $item->name }}')" data-toggle='modal'>Delete</button>
+							
 							</td>
 						</tr>
 						@endforeach
 
 
-
 						<tr>
 							<td colspan='3' class='font-weight-bold text-right'>TOTAL</th>
+							@if(isset($total))
 							<td colspan='2'>₱ {{ number_format($total, 2, '.', ',') }}</td>
+							@endif
 						</tr>
+
+						
 						
 					</tbody>
+
+
+
 				</table>
+				<button class='btn btn-lg border-dark rounded-0' onclick='openClearCartModal()' data-toggle='modal'>
+					Clear Cart
+				</button>
 			</div>
+
 			<div class='col-1'></div>
 		</div>
-
 		<br><br><br><br><br><br>
+		@else
+		<div class='row'>
+			<div class="col text-center">
+					Your cart as empty as your life. 
+			</div>
+		</div>
+		<br>
+		@endif
+
+
+
+		
 		<div class='row mb-5'>
 			<div class='col-1'></div>
 			<div class='col text-center'>
@@ -110,7 +165,7 @@
 	</div>
 
 
-<!-- DELETE MODAL -->
+<!-- DELETE ITEM MODAL -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   	<div class="modal-dialog" role="document">
     	<div class="modal-content">
@@ -138,12 +193,64 @@
   	</div>
 </div>
 
+
+<!-- DELETE CART MODAL -->
+<div class="modal fade" id="deleteCartModal" tabindex="-1" role="dialog" aria-labelledby="deleteCartModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+	      	<div class="modal-header p-5">
+	        	<h3 class="modal-title" id="deleteCartModalLabel">Clear This Cart</h3>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+
+			<div class="modal-body p-5">
+			    <span>Do you want to clear this cart?</span>			  
+			</div>
+			<div class="modal-footer p-5">
+			<form method="POST" id='deleteCart'>
+					{{ csrf_field() }}
+				<button type='submit' class='btn btn-lg bg-dark text-light rounded-0'>Delete</button>
+				<button type="button" class="btn btn-lg border rounded-0" data-dismiss="modal">Close</button>
+			</form>
+			</div>
+
+    	</div>
+  	</div>
+</div>
+
 <script type="text/javascript">
 	function openDeleteModal(id,name){
-		$('#deleteItem').attr('action','/itemdelete/' + id);
+		// $('#deleteItem').attr('action','/itemdelete/' + id);
+		$('#deleteItem').attr('action','/menu/mycart/' + id + '/delete');
 		$('#itemDel').html("Do you want to delete " + name + "?");
 		$('#deleteModal').modal('show');
 	}
+
+	function openClearCartModal(){
+		$('#deleteCart').attr('action','/menu/clearcart');
+		$('#deleteCartModal').modal('show');
+	}
+
+	function minus(id){
+		$('#updateQuantity').attr('action', '/menu/mycart/' + id + '/changequantity');
+		$value = $(".newquantity"+id).val();
+		$value = parseInt($value);
+		if($value > 1){
+			$(".newquantity"+id).val($value-1);
+		}
+	}
+
+	function plus(id){
+		$('#updateQuantity').attr('action', '/menu/mycart/' + id + '/changequantity');
+		$value = $(".newquantity"+id).val();
+		$value = parseInt($value);
+		$(".newquantity"+id).val($value+1);
+	
+	}
+
+
 </script>
 </body>
 </html>

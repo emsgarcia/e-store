@@ -65,7 +65,7 @@
 							<div class="card col-lg-3 col-md-4 col-sm-6 mx-2 my-4 p-0 rounded-0 border-0">
 								<form method='POST' action='/addToCart/{{$item->id}}'>
 											{{ csrf_field() }}
-								    <img class="card-img-top" src="{{ $item->image_path }}" alt="Card image cap" style='width:100%;height:200px;'>
+								    <img class="card-img-top" src="{{ $item->image_path }}" alt="Card image cap" style='width:100%;height:220px;'>
 								    <div class="card-body">
 										<h5 class="card-title font-weight-bold">
 											<a href="/menu/{{ $item->id }}">
