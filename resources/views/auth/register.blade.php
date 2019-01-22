@@ -27,6 +27,15 @@
                             </div>
                         </div>
 
+                         <div class="form-group row">
+                            <label for="username" class="col-md-4 control-label">Username</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="form-control{{$errors->has('username') ? ' is-valid ' : '' }}" name='username' value="{{ old('username') }}" required autofocus>
+                            </div>
+                        </div>
+
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
@@ -63,6 +72,8 @@
                             </div>
                         </div>
 
+                        
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
@@ -70,6 +81,8 @@
                                 </button>
                             </div>
                         </div>
+
+
                     </form>
                 </div>
             </div>
