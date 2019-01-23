@@ -23,6 +23,10 @@ Route::middleware("auth")->group(function(){
 	Route::patch('/menu/{taskid}', 'ItemController@updateItem');
 	Route::delete('/itemdelete/{id}' , 'ItemController@deleteItem');
 
+
+	// CHECKOUT
+	Route::get('/checkout', 'ItemController@checkout');
+	Route::get('/transactions' , 'ItemController@showTransactions');
 });
 
 
@@ -41,4 +45,7 @@ Route::patch('/menu/mycart/{taskid}/changequantity', 'ItemController@updateItemQ
 // AUTHENTICATION
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
 

@@ -14,7 +14,7 @@ class Order extends Model
     //many to many hence plural!
     //item_orders pertain to the name of the pivot table
     public function items(){
-    	return $this->belongsToMany('\App\Item', 'item_orders')->withPivot("quantity")->withTimestamps();
+    	return $this->belongsToMany('\App\Item', '_item_orders')->withPivot("quantity")->withTimestamps();
     }
 
     //

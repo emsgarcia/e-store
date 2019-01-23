@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use App\Item;
 use App\Category;
 use Session;
+use App\Order;
+use DB;
+use Auth;
 
 class ItemController extends Controller
 {
@@ -176,6 +179,38 @@ class ItemController extends Controller
     	return redirect("/showcart");
     	
     }
+
+
+    public function checkout(){
+        $order = new Order; //create order to get order id
+        $order->user_id = Auth::user()->id; // get the user id
+        $order->status_id = 1; //pending
+        $order->total = 0; // for now since we haven't called cart yet
+        $order->save();
+
+        $cartitems = Session::get('cart');
+        $total = 0; //initialize total
+        foreach($cartitems as $item_id => $quantity){
+            
+            //items() method is from order.php public function items()
+            //$order has the values of our newly created variable $order which contains order_id, user/-id, status_id and total
+            $order->items()->attach($item_id, ['quantity' => $quantity]);
+
+            $item = Item::find($item_id);
+            $total += $item->price * $quantity;
+        }
+
+        $ordertotal = Order::find($order->id);
+        $ordertotal->total = $total;
+        $ordertotal->save(); 
+
+    }
+
+    public function showTransactions(){
+        $orders = Order::all();
+        return view('items.transaction', compact('orders'));
+    }
+
 
 
 

@@ -69,11 +69,11 @@ input[type=number]::-webkit-outer-spin-button {
 				<table class="table table-hover">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col" width='25%'>Name</th>
-							<th scope="col" width='25%'>Quantity</th>
-							<th scope="col" width='25%'>Price</th>
-							<th scope="col" width='25%'>Subtotal</th>
-							<th scope="col" width='25%'>Action</th>
+							<th scope="col" width='20%'>Name</th>
+							<th scope="col" width='20%'>Quantity</th>
+							<th scope="col" width='20%'>Price</th>
+							<th scope="col" width='20%'>Subtotal</th>
+							<th scope="col" width='20%'>Action</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -130,9 +130,11 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 				</table>
-				<button class='btn btn-lg border-dark rounded-0' onclick='openClearCartModal()' data-toggle='modal'>
+				<button class='btn btn-lg border rounded-0' onclick='openClearCartModal()' data-toggle='modal'>
 					Clear Cart
 				</button>
+
+
 			</div>
 
 			<div class='col-1'></div>
@@ -156,6 +158,9 @@ input[type=number]::-webkit-outer-spin-button {
 				<a href='/catalog' class='btn btn-lg border-dark rounded-0'>
 					<i class="fas fa-angle-double-left"></i>
 					Go Back To Shopping
+				</a>
+				<a href="/checkout" class='btn btn-lg border-dark bg-dark text-light font-weight-bold rounded-0'>
+					Check Out
 				</a>
 			</div>
 			<div class='col-1'></div>
